@@ -1,1056 +1,1306 @@
+// ignore_for_file: deprecated_member_use
+
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:my_portfolio/app.dart';
-import 'screens/main_screen.dart';
+import 'package:url_launcher/url_launcher.dart';
 
-void main() {
-  runApp(const PortfolioApp());
+final GlobalKey aboutKey = GlobalKey();
+final GlobalKey skillsKey = GlobalKey();
+final GlobalKey projectsKey = GlobalKey();
+final GlobalKey contactKey = GlobalKey();
+final GlobalKey experienceKey = GlobalKey();
+
+const Map<String, dynamic> portfolioData = {
+  "name": "Prakash Dodawad",
+  "profileImage": "assets/profile.png",
+  "tagline": "Building engaging, cross-platform apps with Flutter.",
+  "professionalSummary":
+      "Experienced Flutter Developer with over 3 years of hands-on experience building high-performance, cross-platform mobile applications for Android and iOS. Skilled in Dart, Firebase, REST APIs, GraphQL, and modern state management solutions like BLoC, GetX, and Provider.\n\nI’m passionate about clean architecture, intuitive UI/UX, and writing maintainable, scalable code that delivers real business value. I thrive in collaborative, fast-paced teams and enjoy solving complex problems through innovation and attention to detail.\n\nAlways eager to learn, adapt, and contribute to impactful projects that push the boundaries of mobile technology.",
+  "contact": {
+    "email": "prakashgdodawad@gmail.com",
+    "phone": "+916366133365",
+    "resume":
+        "https://drive.google.com/file/d/10T55Kjx_zAFNTNTEpaP8DNX2Q9MtMWcEj/view?usp=sharing",
+    "linkedin": "https://www.linkedin.com/in/prakash-dodawad-a621571b8",
+    "github": "https://github.com/PrakashDodawad2024",
+    "youtube": "https://www.youtube.com/@FlutterbyPrakash",
+    "location": "Bangalore, Karnataka, Pin code 560097",
+    "dob": "23rd May 2000"
+  },
+  "skills": {
+    "Programming Languages": ["Flutter", "Dart", "Core Java"],
+    "Databases": [
+      "Hive (local storage)",
+      "MySQL",
+      "Shared Preferences",
+      "Firebase Firestore",
+      "Secure Storage"
+    ],
+    "API Integration": [
+      "REST",
+      "GraphQL",
+      "MQTT",
+      "WebSocket",
+      "Firebase Functions"
+    ],
+    "State Management & Design Patterns": [
+      "GetX",
+      "Provider",
+      "BLOC",
+      "MVC",
+      "MVVM"
+    ],
+    "Tools & Platforms": [
+      "Android Studio",
+      "Xcode",
+      "VS Code",
+      "Git",
+      "GitHub",
+      "Postman",
+      "Figma"
+    ],
+    "Flutter Integrations & Platform Services": [
+      "Firebase Auth",
+      "AWS Auth",
+      "Push Notifications (FCM)",
+      "Google Maps",
+      "In-App Purchases"
+    ],
+    "Testing & Deployment": [
+      "Unit Testing",
+      "Widget Testing",
+      "App Store/Play Store Deployment"
+    ]
+  },
+  "workExperience": [
+    {
+      "company": "Mobil80 Solution and Services Pvt Limited",
+      "role": "Software Engineer (Flutter Developer)",
+      "duration": "02nd November 2022 – Present",
+      "responsibilities": [
+        "Developed and implemented user-friendly mobile applications using Flutter.",
+        "Collaborated with senior developers and designers to integrate UI/UX designs and third-party libraries.",
+        "Integrated APIs and services, conducted unit tests, and fixed bugs to ensure app stability and performance.",
+        "Researched and added new features and functionalities to enhance Flutter applications."
+      ]
+    }
+  ],
+  "projects": [
+    {
+      "name": "ServiceWRK Technician",
+      "description":
+          "A mobile app to manage service tickets and increase productivity.",
+      "imageUrl": "assets/images/servicewrk.png",
+      "details": [
+        "Utilized Firebase Auth for secure user authentication and login.",
+        "Integrated Google Maps to provide location services and track technicians.",
+        "Managed data efficiently with GraphQL API and Hive for local storage.",
+        "Implemented GetX for robust state management.",
+        "Incorporated Shake Detector and Screenshot features for enhanced interactivity."
+      ],
+      "links": [
+        {
+          "type": "Play Store",
+          "url":
+              "https://play.google.com/store/apps/details?id=com.mobil80.servicewrk"
+        },
+        {
+          "type": "App Store",
+          "url": "https://apps.apple.com/in/app/servicewrk/id1609190294"
+        }
+      ]
+    },
+    {
+      "name": "ServiceWRK Agent",
+      "description":
+          "A back-end service agent app for creating, assigning, and monitoring tickets from anywhere.",
+      "imageUrl": "assets/images/servicewrkagent.png",
+      "details": [
+        "Enabled agents to create, assign, and manage service tickets on the go.",
+        "Provided real-time monitoring of ticket status and technician locations.",
+        "Integrated Google Maps to provide location services and track agent.",
+        "Managed data efficiently with GraphQL API and Hive for local storage.",
+        "Implemented GetX for robust state management.",
+      ],
+      "links": [
+        {
+          "type": "Play Store",
+          "url":
+              "https://play.google.com/store/apps/details?id=com.mobil80.servicewrkagent"
+        },
+        {
+          "type": "App Store",
+          "url": "https://apps.apple.com/in/app/servicewrk-agent/id1612823765"
+        }
+      ]
+    },
+    {
+      "name": "PharmaWRK",
+      "description":
+          "An easy tool to assist Medical Representatives in the field.",
+      "imageUrl": "assets/images/pharmawrk.png",
+      "details": [
+        "Features Firebase Auth and Google Maps for user authentication and location services.",
+        "Uses GraphQL API and Hive database for efficient and offline-friendly data handling.",
+        "Leveraged the GetX state management package for a responsive and scalable architecture.",
+        "Enabled uploading and fetching files from AWS S3, along with handling dynamic form fields.",
+        "Implemented Hive for submitting offline visit logs reliably.",
+        "Designed to be fully responsive across both mobile devices and iPads.",
+      ],
+      "links": [
+        {
+          "type": "Play Store",
+          "url":
+              "https://play.google.com/store/apps/details?id=com.mobil80.pharmawrk"
+        },
+        {
+          "type": "App Store",
+          "url": "https://apps.apple.com/in/app/pharmawrk/id1575723537"
+        }
+      ]
+    },
+    {
+      "name": "Dyrectori",
+      "description":
+          "Organize & share contact books, directories, and lists with others or use solo.",
+      "imageUrl": "assets/images/dyrectori.png",
+      "details": [
+        "Created dynamic directories with customizable fields for flexible data input",
+        "Displayed text fields dynamically while adding entries based on directory structure",
+        "Integrated amplify_storage_s3 to upload and manage files on AWS S3",
+        "Displayed user and directory locations using google_maps_flutter",
+        "Fetched directory lists from AWS S3 using aws_client for real-time access",
+        "Used hive_flutter to store and display directories for offline access",
+        "Implemented razorpay_flutter on Android and RevenueCat on iOS for directory upgrades",
+      ],
+      "links": [
+        {
+          "type": "Play Store",
+          "url":
+              "https://play.google.com/store/apps/details?id=com.mobil80.dyrectori&pcampaignid=web_share"
+        },
+        {
+          "type": "App Store",
+          "url":
+              "https://apps.apple.com/in/app/dyrectori-shared-entry-books/id6742438975"
+        }
+      ]
+    },
+    {
+      "name": "Radio.ONE",
+      "description":
+          "Enjoy a world of music at your fingertips with Radio.ONE app!.",
+      "imageUrl": "assets/images/radioone.png",
+      "details": [
+        "Tune in to your favorite stations across genres - relax, dance, or explore new sounds",
+        "Set your favorite stations for instant access anytime",
+        "Used radio_player package to stream live radio stations seamlessly",
+        "Implemented MQTT protocol to list and update all available radio stations in real time",
+        "Utilized Hive database to store radio station data for offline access and fast loading",
+      ],
+      "links": [
+        {"type": "Play Store", "url": ""},
+        {"type": "App Store", "url": ""}
+      ]
+    }
+  ],
+  "education": [
+    {
+      "school":
+          "KLS’s Vishwanathrao Deshpande Institute of Technology, Haliyal",
+      "degree": "B. E in Civil Engineering",
+      "duration": "2017-2021",
+    },
+    {
+      "school": "Madeena Pre-University College, Dharwad",
+      "degree": "Pre-University Course",
+      "duration": "2016-2017",
+    },
+    {
+      "school": "Basel Mission Boys High School, Dharwad",
+      "degree": "Secondary School Leaving Certificate",
+      "duration": "2014-2015",
+    }
+  ]
+};
+
+Future<void> launchURL(String url) async {
+  final Uri uri = Uri.parse(url);
+  if (await canLaunchUrl(uri)) {
+    await launchUrl(uri);
+  } else {
+    // ignore: avoid_print
+    print('Could not launch $url');
+  }
 }
 
-// import 'package:flutter/material.dart';
-// import 'package:google_fonts/google_fonts.dart';
-// import 'package:url_launcher/url_launcher.dart';
-// import 'package:flutter/services.dart';
-// import 'package:path_provider/path_provider.dart';
-// import 'dart:io';
-// import 'package:flutter_social_button/flutter_social_button.dart';
+void scrollToKey(GlobalKey key, ScrollController controller) {
+  final context = key.currentContext;
+  if (context != null) {
+    Scrollable.ensureVisible(
+      context,
+      duration: const Duration(milliseconds: 600),
+      curve: Curves.easeInOut,
+    );
+  }
+}
 
-// const Map<String, dynamic> portfolioData = {
-//   "name": "Prakash Dodawad",
-//   "tagline": "Building engaging, cross-platform apps with Flutter.",
-//   "professionalSummary":
-//       "Experienced Flutter Developer with over a year of creating high-quality, cross-platform apps. Skilled at translating complex requirements into engaging user experiences and delivering reliable solutions in fast-paced environments. Committed to continuous learning and innovation. I have a strong foundation in Flutter development, including state management, API integration, and performance optimization. My experience spans the full app lifecycle, from initial design and development to deployment and maintenance.",
-//   "contact": {
-//     "email": "prakashgdodawad@gmail.com",
-//     "phone": "+916366133365",
-//     "resume":
-//         "https://drive.google.com/file/d/10T55Kjx_zAFNTGepaP8DNX2Q9MtMWcEj/view?usp=sharing",
-//     "linkedin": "https://www.linkedin.com/in/prakash-dodawad-a621571b8",
-//     "github": "https://github.com/PrakashDodawad2024",
-//     "location": "Bangalore, Karnataka, Pin code 560097",
-//     "dob": "23rd May 2000"
-//   },
-//   "skills": {
-//     "languages": ["Flutter", "Dart", "Core Java"],
-//     "databases": ["Hive Database", "MySQL"],
-//     "api": ["Rest", "GraphQL", "MQTT"],
-//     "stateManagement": ["GetX", "Provider", "BLOC", "MVC", "MVVM"],
-//     "tools": ["Visual Studio Code", "Android Studio", "Xcode", "GitHub"]
-//   },
-//   "workExperience": [
-//     {
-//       "company": "Mobil80 Solution and Services Pvt Limited",
-//       "role": "Software Engineer (Flutter Developer)",
-//       "duration": "02nd November 2022 – Present",
-//       "responsibilities": [
-//         "Developed and implemented user-friendly mobile applications using Flutter.",
-//         "Collaborated with senior developers and designers to integrate UI/UX designs and third-party libraries.",
-//         "Integrated APIs and services, conducted unit tests, and fixed bugs to ensure app stability and performance.",
-//         "Researched and added new features and functionalities to enhance Flutter applications."
-//       ]
-//     }
-//   ],
-//   "projects": [
-//     {
-//       "name": "ServiceWRK Technician",
-//       "description":
-//           "A mobile app to manage service tickets and increase productivity.",
-//       "imageUrl": "assets/images/servicewrk.png",
-//       "details": [
-//         "Utilized Firebase Auth for secure user authentication and login.",
-//         "Integrated Google Maps to provide location services and track technicians.",
-//         "Managed data efficiently with GraphQL API and Hive for local storage.",
-//         "Implemented GetX for robust state management.",
-//         "Incorporated Shake Detector and Screenshot features for enhanced interactivity."
-//       ],
-//       "links": [
-//         {
-//           "type": "Play Store",
-//           "url":
-//               "https://play.google.com/store/apps/details?id=com.mobil80.servicewrk"
-//         },
-//         {
-//           "type": "App Store",
-//           "url": "https://apps.apple.com/in/app/servicewrk/id1609190294"
-//         }
-//       ]
-//     },
-//     {
-//       "name": "ServiceWRK Agent",
-//       "description":
-//           "A back-end service agent app for creating, assigning, and monitoring tickets from anywhere.",
-//       "imageUrl": "assets/images/servicewrkagent.png",
-//       "details": [
-//         "Enabled agents to create, assign, and manage service tickets on the go.",
-//         "Provided real-time monitoring of ticket status and technician locations.",
-//         "Integrated Google Maps to provide location services and track agent.",
-//         "Managed data efficiently with GraphQL API and Hive for local storage.",
-//         "Implemented GetX for robust state management.",
-//       ],
-//       "links": [
-//         {
-//           "type": "Play Store",
-//           "url":
-//               "https://play.google.com/store/apps/details?id=com.mobil80.servicewrkagent"
-//         },
-//         {
-//           "type": "App Store",
-//           "url": "https://apps.apple.com/in/app/servicewrk-agent/id1612823765"
-//         }
-//       ]
-//     },
-//     {
-//       "name": "PharmaWRK",
-//       "description":
-//           "An easy tool to assist Medical Representatives in the field.",
-//       "imageUrl": "assets/images/pharmawrk.png",
-//       "details": [
-//         "Features Firebase Auth and Google Maps for user authentication and location services.",
-//         "Uses GraphQL API and Hive database for efficient and offline-friendly data handling.",
-//         "Leveraged the GetX state management package for a responsive and scalable architecture.",
-//         "Enabled uploading and fetching files from AWS S3, along with handling dynamic form fields.",
-//         "Implemented Hive for submitting offline visit logs reliably.",
-//         "Designed to be fully responsive across both mobile devices and iPads.",
-//       ],
-//       "links": [
-//         {
-//           "type": "Play Store",
-//           "url":
-//               "https://play.google.com/store/apps/details?id=com.mobil80.pharmawrk"
-//         },
-//         {
-//           "type": "App Store",
-//           "url": "https://apps.apple.com/in/app/pharmawrk/id1575723537"
-//         }
-//       ]
-//     },
-//     {
-//       "name": "Dyrectori",
-//       "description":
-//           "Organize & share contact books, directories, and lists with others or use solo.",
-//       "imageUrl": "assets/images/dyrectori.png",
-//       "details": [
-//         "Created dynamic directories with customizable fields for flexible data input",
-//         "Displayed text fields dynamically while adding entries based on directory structure",
-//         "Integrated amplify_storage_s3 to upload and manage files on AWS S3",
-//         "Displayed user and directory locations using google_maps_flutter",
-//         "Fetched directory lists from AWS S3 using aws_client for real-time access",
-//         "Used hive_flutter to store and display directories for offline access",
-//         "Implemented razorpay_flutter on Android and RevenueCat on iOS for directory upgrades",
-//       ],
-//       "links": [
-//         {
-//           "type": "Play Store",
-//           "url":
-//               "https://play.google.com/store/apps/details?id=com.mobil80.dyrectori&pcampaignid=web_share"
-//         },
-//         {
-//           "type": "App Store",
-//           "url":
-//               "https://apps.apple.com/in/app/dyrectori-shared-entry-books/id6742438975"
-//         }
-//       ]
-//     },
-//     {
-//       "name": "Radio.ONE",
-//       "description":
-//           "Enjoy a world of music at your fingertips with Radio.ONE app!.",
-//       "imageUrl": "assets/images/radioone.png",
-//       "details": [
-//         "Tune in to your favorite stations across genres - relax, dance, or explore new sounds",
-//         "Set your favorite stations for instant access anytime",
-//         "Used radio_player package to stream live radio stations seamlessly",
-//         "Implemented MQTT protocol to list and update all available radio stations in real time",
-//         "Utilized Hive database to store radio station data for offline access and fast loading",
-//       ],
-//       "links": [
-//         {"type": "Play Store", "url": ""},
-//         {"type": "App Store", "url": ""}
-//       ]
-//     }
-//   ],
-//   "education": [
-//     {
-//       "school":
-//           "KLS’s Vishwanathrao Deshpande Institute of Technology, Haliyal",
-//       "degree": "B. E in Civil Engineering",
-//       "duration": "2017-2021",
-//     },
-//     {
-//       "school": "Madeena Pre-University College, Dharwad",
-//       "degree": "Pre-University Course",
-//       "duration": "2016-2017",
-//     },
-//     {
-//       "school": "Basel Mission Boys High School, Dharwad",
-//       "degree": "Secondary School Leaving Certificate",
-//       "duration": "2014-2015",
-//     }
-//   ]
-// };
-// void main() {
-//   runApp(const PortfolioApp());
-// }
+class ResponsiveLayout extends StatelessWidget {
+  final Widget mobileScaffold;
+  final Widget tabletScaffold;
+  final Widget desktopScaffold;
 
-// class NoScrollbarBehavior extends ScrollBehavior {
-//   @override
-//   Widget buildOverscrollIndicator(
-//       BuildContext context, Widget child, ScrollableDetails details) {
-//     return child;
-//   }
-// }
+  const ResponsiveLayout({
+    required this.mobileScaffold,
+    required this.tabletScaffold,
+    required this.desktopScaffold,
+    super.key,
+  });
 
-// class PortfolioApp extends StatelessWidget {
-//   const PortfolioApp({super.key});
+  static const int mobileBreakpoint = 600;
+  static const int tabletBreakpoint = 1000;
 
-//   @override
-//   Widget build(BuildContext context) {
-//     return MaterialApp(
-//       debugShowCheckedModeBanner: false,
-//       title: 'Prakash Dodawad',
-//       theme: ThemeData(
-//         scaffoldBackgroundColor: Colors.white,
-//         appBarTheme: AppBarTheme(
-//           backgroundColor: Colors.white,
-//           foregroundColor: Colors.black87,
-//           elevation: 0,
-//           centerTitle: false,
-//           titleTextStyle: GoogleFonts.poppins(
-//             fontSize: 24,
-//             fontWeight: FontWeight.bold,
-//             color: Colors.black87,
-//           ),
-//         ),
-//         textTheme: TextTheme(
-//           bodyLarge: GoogleFonts.poppins(color: Colors.black87),
-//           bodyMedium: GoogleFonts.poppins(color: Colors.grey.shade600),
-//           titleLarge: GoogleFonts.poppins(
-//               color: Colors.black87, fontWeight: FontWeight.bold),
-//           displayLarge: GoogleFonts.poppins(
-//               color: Colors.black87, fontWeight: FontWeight.bold),
-//           headlineLarge: GoogleFonts.poppins(
-//               color: Colors.black87, fontWeight: FontWeight.bold),
-//         ),
-//         cardTheme: CardTheme(
-//           color: Colors.grey.shade50,
-//           elevation: 2,
-//           shape: RoundedRectangleBorder(
-//             borderRadius: BorderRadius.circular(12),
-//           ),
-//         ),
-//         colorScheme: const ColorScheme.light(
-//           primary: Color(0xFF1434A4),
-//           secondary: Color(0xFFF0F2F5),
-//           surface: Colors.white,
-//           onSurface: Colors.black87,
-//         ),
-//         navigationBarTheme: NavigationBarThemeData(
-//           iconTheme: MaterialStateProperty.resolveWith<IconThemeData>((states) {
-//             if (states.contains(MaterialState.selected)) {
-//               return IconThemeData(color: Color(0xFF1434A4));
-//             }
-//             return IconThemeData(color: Colors.grey.shade600);
-//           }),
-//           labelTextStyle:
-//               MaterialStateProperty.resolveWith<TextStyle>((states) {
-//             return TextStyle(
-//               color: states.contains(MaterialState.selected)
-//                   ? Color(0xFF1434A4)
-//                   : Colors.grey.shade600,
-//             );
-//           }),
-//         ),
-//         useMaterial3: true,
-//       ),
-//       home: const MainScreen(),
-//     );
-//   }
-// }
+  @override
+  Widget build(BuildContext context) {
+    return LayoutBuilder(
+      builder: (context, constraints) {
+        if (constraints.maxWidth < mobileBreakpoint) {
+          return mobileScaffold;
+        } else if (constraints.maxWidth < tabletBreakpoint) {
+          return tabletScaffold;
+        } else {
+          return desktopScaffold;
+        }
+      },
+    );
+  }
+}
 
-// class MainScreen extends StatefulWidget {
-//   const MainScreen({super.key});
+class TopBar extends StatelessWidget {
+  final Map<String, dynamic> portfolioData;
+  final ScrollController scrollController;
 
-//   @override
-//   State<MainScreen> createState() => _MainScreenState();
-// }
+  const TopBar({
+    required this.portfolioData,
+    required this.scrollController,
+    super.key,
+  });
 
-// class _MainScreenState extends State<MainScreen> {
-//   int _selectedIndex = 0;
+  @override
+  Widget build(BuildContext context) {
+    final List<Map<String, dynamic>> navItems = [
+      {'text': 'About', 'key': aboutKey},
+      {'text': 'Experience', 'key': experienceKey},
+      {'text': 'Skills', 'key': skillsKey},
+      {'text': 'Projects', 'key': projectsKey},
+      {'text': 'Contact', 'key': contactKey},
+    ];
 
-//   final List<Widget> _pages = const [
-//     HomePage(),
-//     AboutPage(),
-//     ProjectsPage(),
-//     ContactPage(),
-//   ];
+    return AppBar(
+      backgroundColor: Theme.of(context).scaffoldBackgroundColor,
+      elevation: 0,
+      title: Text(
+        '${portfolioData['name']}',
+        style: TextStyle(
+          color: Theme.of(context).primaryColor,
+          fontSize: 20,
+          fontWeight: FontWeight.bold,
+        ),
+      ),
+      actions: [
+        Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 20.0),
+          child: Row(
+            children: [
+              ...navItems.map((item) {
+                return Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: _NavBarButton(
+                    text: item['text'],
+                    onPressed: () =>
+                        scrollToKey(item['key'] as GlobalKey, scrollController),
+                  ),
+                );
+              }).toList(),
+              const SizedBox(width: 20),
+            ],
+          ),
+        ),
+      ],
+    );
+  }
+}
 
-//   final List<String> _pageTitles = const [
-//     'Home',
-//     'About',
-//     'Projects',
-//     'Contact',
-//   ];
+class _NavBarButton extends StatelessWidget {
+  final String text;
+  final VoidCallback onPressed;
+  const _NavBarButton({required this.text, required this.onPressed});
 
-//   void _onItemTapped(int index) {
-//     setState(() {
-//       _selectedIndex = index;
-//     });
-//   }
+  @override
+  Widget build(BuildContext context) {
+    return TextButton(
+      onPressed: onPressed,
+      child: Text(
+        text,
+        style: const TextStyle(
+          color: Colors.white,
+          fontSize: 16,
+        ),
+      ),
+    );
+  }
+}
 
-//   @override
-//   Widget build(BuildContext context) {
-//     const double mobileBreakpoint = 600;
-//     final bool isMobile = MediaQuery.of(context).size.width < mobileBreakpoint;
+class ContactLinks extends StatelessWidget {
+  final Map<String, dynamic> contact;
+  const ContactLinks({required this.contact, super.key});
 
-//     return Scaffold(
-//       appBar: AppBar(
-//         title: RichText(
-//           text: TextSpan(
-//             style: GoogleFonts.poppins(
-//               fontSize: 24,
-//               fontWeight: FontWeight.bold,
-//             ),
-//             children: [
-//               TextSpan(
-//                 text: 'Prakash',
-//                 style: TextStyle(
-//                   color: Theme.of(context).colorScheme.primary,
-//                 ),
-//               ),
-//               const TextSpan(
-//                 text: ' Dodawad',
-//                 style: TextStyle(
-//                   color: Colors.black87,
-//                 ),
-//               ),
-//             ],
-//           ),
-//         ),
-//         actions: isMobile
-//             ? null
-//             : [
-//                 const SizedBox(width: 16),
-//                 ...List.generate(
-//                   _pageTitles.length,
-//                   (index) => Padding(
-//                     padding: const EdgeInsets.symmetric(horizontal: 8.0),
-//                     child: TextButton(
-//                       onPressed: () => _onItemTapped(index),
-//                       child: Text(
-//                         _pageTitles[index],
-//                         style: GoogleFonts.poppins(
-//                           fontSize: 16,
-//                           color: _selectedIndex == index
-//                               ? Theme.of(context).colorScheme.primary
-//                               : Colors.black54,
-//                           fontWeight: _selectedIndex == index
-//                               ? FontWeight.bold
-//                               : FontWeight.normal,
-//                         ),
-//                       ),
-//                     ),
-//                   ),
-//                 ),
-//                 const SizedBox(width: 16),
-//               ],
-//       ),
-//       body: Center(
-//         child: ConstrainedBox(
-//           constraints: BoxConstraints(
-//             maxWidth: isMobile ? double.infinity : 900,
-//           ),
-//           child: _pages[_selectedIndex],
-//         ),
-//       ),
-//       bottomNavigationBar: isMobile
-//           ? NavigationBar(
-//               selectedIndex: _selectedIndex,
-//               onDestinationSelected: _onItemTapped,
-//               height: 70,
-//               backgroundColor: Colors.white,
-//               labelBehavior: NavigationDestinationLabelBehavior.alwaysShow,
-//               destinations: const [
-//                 NavigationDestination(
-//                   icon: Icon(Icons.home_outlined),
-//                   selectedIcon: Icon(Icons.home),
-//                   label: 'Home',
-//                 ),
-//                 NavigationDestination(
-//                   icon: Icon(Icons.person_outline),
-//                   selectedIcon: Icon(Icons.person),
-//                   label: 'About',
-//                 ),
-//                 NavigationDestination(
-//                   icon: Icon(Icons.folder_open),
-//                   selectedIcon: Icon(Icons.folder),
-//                   label: 'Projects',
-//                 ),
-//                 NavigationDestination(
-//                   icon: Icon(Icons.contact_mail_outlined),
-//                   selectedIcon: Icon(Icons.contact_mail),
-//                   label: 'Contact',
-//                 ),
-//               ],
-//             )
-//           : null,
-//     );
-//   }
-// }
+  @override
+  Widget build(BuildContext context) {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        _SocialIcon(
+            icon: Icons.link, url: contact['linkedin'], label: 'LinkedIn'),
+        _SocialIcon(icon: Icons.code, url: contact['github'], label: 'GitHub'),
+        _SocialIcon(
+            icon: Icons.email,
+            url: 'mailto:${contact['email']}',
+            label: 'Email'),
+        _SocialIcon(
+            icon: Icons.play_arrow, url: contact['youtube'], label: 'YouTube'),
+      ],
+    );
+  }
+}
 
-// class SectionTitleWithContent extends StatelessWidget {
-//   final String title;
-//   final Widget child;
-//   final IconData? icon;
+class _SocialIcon extends StatelessWidget {
+  final IconData icon;
+  final String url;
+  final String label;
 
-//   const SectionTitleWithContent({
-//     super.key,
-//     required this.title,
-//     required this.child,
-//     this.icon,
-//   });
+  const _SocialIcon({
+    required this.icon,
+    required this.url,
+    required this.label,
+  });
 
-//   @override
-//   Widget build(BuildContext context) {
-//     return Column(
-//       crossAxisAlignment: CrossAxisAlignment.start,
-//       children: [
-//         Row(
-//           children: [
-//             if (icon != null) ...[
-//               Icon(icon, color: Theme.of(context).colorScheme.primary),
-//               const SizedBox(width: 8),
-//             ],
-//             Text(
-//               title,
-//               style: GoogleFonts.poppins(
-//                 fontSize: 24,
-//                 fontWeight: FontWeight.bold,
-//                 color: Colors.black87,
-//               ),
-//             ),
-//           ],
-//         ),
-//         const SizedBox(height: 12),
-//         child,
-//       ],
-//     );
-//   }
-// }
+  @override
+  Widget build(BuildContext context) {
+    return IconButton(
+      icon: Icon(icon, color: Theme.of(context).primaryColor, size: 28),
+      tooltip: label,
+      onPressed: () => launchURL(url),
+    );
+  }
+}
 
-// class HomePage extends StatelessWidget {
-//   const HomePage({super.key});
+class HeaderSection extends StatelessWidget {
+  final Map<String, dynamic> portfolioData;
+  final bool isMobileSection;
+  const HeaderSection(
+      {required this.portfolioData, this.isMobileSection = false, super.key});
 
-//   _launchURL(String url) async {
-//     final Uri uri = Uri.parse(url);
-//     if (await canLaunchUrl(uri)) {
-//       await launchUrl(uri);
-//     } else {
-//       throw 'Could not launch $uri';
-//     }
-//   }
+  @override
+  Widget build(BuildContext context) {
+    final size = MediaQuery.of(context).size;
+    final isMobile = size.width < ResponsiveLayout.mobileBreakpoint;
 
-//   @override
-//   Widget build(BuildContext context) {
-//     return ScrollConfiguration(
-//       behavior: NoScrollbarBehavior(),
-//       child: SingleChildScrollView(
-//         child: Padding(
-//           padding: const EdgeInsets.all(16.0),
-//           child: Column(
-//             mainAxisAlignment: MainAxisAlignment.center,
-//             children: [
-//               Container(
-//                 width: 200,
-//                 height: 200,
-//                 decoration: BoxDecoration(
-//                   shape: BoxShape.circle,
-//                   border: Border.all(
-//                     color: Theme.of(context).colorScheme.primary,
-//                     width: 4,
-//                   ),
-//                 ),
-//                 child: ClipOval(
-//                   child: FittedBox(
-//                     fit: BoxFit.contain,
-//                     child: SizedBox(
-//                       width: 200,
-//                       height: 200,
-//                       child: Image.asset(
-//                         "assets/profile.png",
-//                       ),
-//                     ),
-//                   ),
-//                 ),
-//               ),
-//               const SizedBox(height: 32),
-//               Text(
-//                 'Hello, I\'m Prakash',
-//                 style: GoogleFonts.poppins(
-//                   fontSize: 36,
-//                   fontWeight: FontWeight.bold,
-//                   color: Colors.black87,
-//                 ),
-//                 textAlign: TextAlign.center,
-//               ),
-//               const SizedBox(height: 8),
-//               Text(
-//                 portfolioData["tagline"]!,
-//                 style: GoogleFonts.poppins(
-//                   fontSize: 18,
-//                   color: Colors.grey.shade600,
-//                 ),
-//                 textAlign: TextAlign.center,
-//               ),
-//               const SizedBox(height: 48),
-//               SectionTitleWithContent(
-//                 title: 'Professional Summary',
-//                 child: Text(
-//                   portfolioData["professionalSummary"]!,
-//                   style: GoogleFonts.poppins(color: Colors.grey.shade600),
-//                 ),
-//               ),
-//               const SizedBox(height: 32),
-//               Row(
-//                 mainAxisAlignment: MainAxisAlignment.center,
-//                 children: [
-//                   SizedBox(
-//                     height: 48,
-//                     width: 48,
-//                     child: FittedBox(
-//                       fit: BoxFit.scaleDown,
-//                       child: FlutterSocialButton(
-//                         mini: true,
-//                         buttonType: ButtonType.linkedin,
-//                         onTap: () =>
-//                             _launchURL(portfolioData["contact"]["linkedin"]),
-//                       ),
-//                     ),
-//                   ),
-//                   const SizedBox(width: 18),
-//                   SizedBox(
-//                     height: 48,
-//                     width: 48,
-//                     child: FittedBox(
-//                       fit: BoxFit.scaleDown,
-//                       child: FlutterSocialButton(
-//                         mini: true,
-//                         buttonType: ButtonType.github,
-//                         onTap: () =>
-//                             _launchURL(portfolioData["contact"]["github"]),
-//                       ),
-//                     ),
-//                   ),
-//                 ],
-//               )
-//             ],
-//           ),
-//         ),
-//       ),
-//     );
-//   }
-// }
+    final profileImage = Padding(
+      padding: EdgeInsets.all(isMobile ? 0 : 20),
+      child: Container(
+        width: isMobile ? 180 : 350,
+        height: isMobile ? 180 : 350,
+        decoration: BoxDecoration(
+          shape: BoxShape.circle,
+          border: Border.all(
+            color: Theme.of(context).primaryColor,
+            width: isMobile ? 3 : 4,
+          ),
+          image: DecorationImage(
+            image: AssetImage(portfolioData['profileImage']!),
+            fit: BoxFit.contain,
+          ),
+          boxShadow: [
+            BoxShadow(
+              color: Colors.black.withOpacity(0.08),
+              blurRadius: 8,
+              offset: const Offset(0, 4),
+            ),
+          ],
+        ),
+      ),
+    );
 
-// class AboutPage extends StatelessWidget {
-//   const AboutPage({super.key});
+    final textContent = Column(
+      crossAxisAlignment:
+          isMobile ? CrossAxisAlignment.center : CrossAxisAlignment.start,
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        Text(
+          'Hi, my name is',
+          style: TextStyle(
+            color: Theme.of(context).primaryColor,
+            fontSize: isMobile ? 18 : 20,
+          ),
+        ),
+        const SizedBox(height: 10),
+        Text(
+          portfolioData['name']!,
+          textAlign: isMobile ? TextAlign.center : TextAlign.left,
+          style: TextStyle(
+            color: Colors.white,
+            fontSize: isMobile ? 40 : 70,
+            fontWeight: FontWeight.bold,
+          ),
+        ),
+        const SizedBox(height: 5),
+        Text(
+          portfolioData['tagline']!,
+          textAlign: isMobile ? TextAlign.center : TextAlign.left,
+          style: TextStyle(
+            color: Colors.grey.shade400,
+            fontSize: isMobile ? 30 : 60,
+            fontWeight: FontWeight.bold,
+          ),
+        ),
+        const SizedBox(height: 25),
+        SizedBox(
+          width: isMobile ? size.width : size.width * 0.5,
+          child: Text(
+            portfolioData['professionalSummary']!,
+            textAlign: isMobile ? TextAlign.center : TextAlign.left,
+            style: TextStyle(
+              color: Colors.grey,
+              fontSize: isMobile ? 16 : 18,
+              height: 1.5,
+            ),
+          ),
+        ),
+      ],
+    );
 
-//   @override
-//   Widget build(BuildContext context) {
-//     return ScrollConfiguration(
-//       behavior: NoScrollbarBehavior(),
-//       child: ListView(
-//         padding: const EdgeInsets.all(16.0),
-//         children: [
-//           Text(
-//             'About Me',
-//             style: GoogleFonts.poppins(
-//               fontSize: 28,
-//               fontWeight: FontWeight.bold,
-//               color: Colors.black87,
-//             ),
-//           ),
-//           const Divider(color: Color(0xFF1434A4), thickness: 2),
-//           const SizedBox(height: 16),
-//           SectionTitleWithContent(
-//             title: 'Professional Summary',
-//             child: Text(
-//               portfolioData["professionalSummary"]!,
-//               style: GoogleFonts.poppins(color: Colors.grey.shade600),
-//             ),
-//           ),
-//           const SizedBox(height: 24),
-//           SectionTitleWithContent(
-//             title: 'Technical Skills',
-//             icon: Icons.code,
-//             child: Column(
-//               crossAxisAlignment: CrossAxisAlignment.start,
-//               children: [
-//                 _buildSkillCategory(
-//                     "Languages", portfolioData["skills"]["languages"], context),
-//                 _buildSkillCategory(
-//                     "Databases", portfolioData["skills"]["databases"], context),
-//                 _buildSkillCategory(
-//                     "API Integration", portfolioData["skills"]["api"], context),
-//                 _buildSkillCategory("State Management",
-//                     portfolioData["skills"]["stateManagement"], context),
-//                 _buildSkillCategory(
-//                     "Tools", portfolioData["skills"]["tools"], context),
-//               ],
-//             ),
-//           ),
-//           const SizedBox(height: 24),
-//           SectionTitleWithContent(
-//             title: 'Work Experience',
-//             icon: Icons.work,
-//             child: Column(
-//               children: [
-//                 for (var exp in portfolioData["workExperience"])
-//                   _buildExperienceCard(context, exp),
-//               ],
-//             ),
-//           ),
-//           const SizedBox(height: 24),
-//           SectionTitleWithContent(
-//             title: 'Education',
-//             icon: Icons.school,
-//             child: Column(
-//               children: [
-//                 for (var edu in portfolioData["education"])
-//                   _buildEducationCard(context, edu),
-//               ],
-//             ),
-//           ),
-//         ],
-//       ),
-//     );
-//   }
+    return Container(
+      key: aboutKey,
+      padding: const EdgeInsets.symmetric(vertical: 50),
+      constraints: const BoxConstraints(minHeight: 600),
+      child: isMobile
+          ? Column(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              mainAxisAlignment: MainAxisAlignment.start,
+              children: [
+                profileImage,
+                const SizedBox(height: 40),
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 0),
+                  child: textContent,
+                ),
+              ],
+            )
+          : Row(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Expanded(flex: 3, child: textContent),
+                Expanded(flex: 2, child: profileImage),
+              ],
+            ),
+    );
+  }
+}
 
-//   Widget _buildSkillCategory(
-//       String title, List<dynamic> skills, BuildContext context) {
-//     return Padding(
-//       padding: const EdgeInsets.symmetric(vertical: 8.0),
-//       child: Column(
-//         crossAxisAlignment: CrossAxisAlignment.start,
-//         children: [
-//           Text(
-//             title,
-//             style: GoogleFonts.poppins(
-//               fontSize: 18,
-//               fontWeight: FontWeight.bold,
-//               color: Theme.of(context).colorScheme.primary,
-//             ),
-//           ),
-//           const SizedBox(height: 4),
-//           Wrap(
-//             spacing: 8.0,
-//             runSpacing: 4.0,
-//             children: skills
-//                 .map((skill) => Chip(
-//                       label: Text(skill,
-//                           style: GoogleFonts.poppins(color: Colors.black87)),
-//                       backgroundColor: Theme.of(context).colorScheme.secondary,
-//                       shape: RoundedRectangleBorder(
-//                           borderRadius: BorderRadius.circular(8)),
-//                     ))
-//                 .toList(),
-//           ),
-//         ],
-//       ),
-//     );
-//   }
+class AnimatedSectionWrapper extends StatelessWidget {
+  final Widget child;
+  final Duration delay;
 
-//   Widget _buildExperienceCard(BuildContext context, Map<String, dynamic> exp) {
-//     return Card(
-//       child: Padding(
-//         padding: const EdgeInsets.all(16.0),
-//         child: Column(
-//           crossAxisAlignment: CrossAxisAlignment.start,
-//           children: [
-//             Text(
-//               exp["role"],
-//               style: GoogleFonts.poppins(
-//                 fontSize: 20,
-//                 fontWeight: FontWeight.bold,
-//                 color: Colors.black87,
-//               ),
-//             ),
-//             Text(
-//               exp["company"],
-//               style: GoogleFonts.poppins(
-//                 fontSize: 16,
-//                 color: Colors.grey.shade600,
-//               ),
-//             ),
-//             const SizedBox(height: 8),
-//             Text(
-//               exp["duration"],
-//               style: GoogleFonts.poppins(
-//                 fontSize: 14,
-//                 fontStyle: FontStyle.italic,
-//                 color: Colors.grey.shade500,
-//               ),
-//             ),
-//             const SizedBox(height: 8),
-//             for (var res in exp["responsibilities"])
-//               Padding(
-//                 padding: const EdgeInsets.symmetric(vertical: 4.0),
-//                 child: Row(
-//                   crossAxisAlignment: CrossAxisAlignment.start,
-//                   children: [
-//                     Icon(Icons.check_circle_outline,
-//                         size: 16, color: Theme.of(context).colorScheme.primary),
-//                     const SizedBox(width: 8),
-//                     Expanded(
-//                       child: Text(
-//                         res,
-//                         style: GoogleFonts.poppins(color: Colors.black87),
-//                       ),
-//                     ),
-//                   ],
-//                 ),
-//               ),
-//           ],
-//         ),
-//       ),
-//     );
-//   }
+  const AnimatedSectionWrapper({
+    required this.child,
+    this.delay = const Duration(milliseconds: 0),
+    super.key,
+  });
 
-//   Widget _buildEducationCard(BuildContext context, Map<String, dynamic> edu) {
-//     return Container(
-//       width: double.infinity,
-//       margin: const EdgeInsets.only(bottom: 16),
-//       child: Card(
-//         child: Padding(
-//           padding: const EdgeInsets.all(16.0),
-//           child: Column(
-//             crossAxisAlignment: CrossAxisAlignment.start,
-//             children: [
-//               Text(
-//                 edu["degree"],
-//                 style: GoogleFonts.poppins(
-//                   fontSize: 18,
-//                   fontWeight: FontWeight.bold,
-//                   color: Colors.black87,
-//                 ),
-//               ),
-//               Text(
-//                 edu["school"],
-//                 style: GoogleFonts.poppins(
-//                   fontSize: 16,
-//                   color: Colors.grey.shade600,
-//                 ),
-//               ),
-//               const SizedBox(height: 8),
-//               Text(
-//                 edu["duration"],
-//                 style: GoogleFonts.poppins(
-//                   fontSize: 14,
-//                   fontStyle: FontStyle.italic,
-//                   color: Colors.grey.shade500,
-//                 ),
-//               ),
-//             ],
-//           ),
-//         ),
-//       ),
-//     );
-//   }
-// }
+  @override
+  Widget build(BuildContext context) {
+    return TweenAnimationBuilder<double>(
+      tween: Tween<double>(begin: 0.0, end: 1.0),
+      duration: const Duration(milliseconds: 700),
+      curve: Curves.easeOutCubic,
+      builder: (context, value, child) {
+        return Opacity(
+          opacity: value,
+          child: Transform.translate(
+            offset: Offset(0, 30 * (1 - value)),
+            child: child,
+          ),
+        );
+      },
+      child: child,
+    );
+  }
+}
 
-// class ProjectsPage extends StatelessWidget {
-//   const ProjectsPage({super.key});
+class ExperienceAndEducationSection extends StatelessWidget {
+  final Map<String, dynamic> portfolioData;
+  final bool isMobileSection;
+  const ExperienceAndEducationSection(
+      {required this.portfolioData, this.isMobileSection = false, super.key});
 
-//   _launchURL(String url) async {
-//     final Uri uri = Uri.parse(url);
-//     if (await canLaunchUrl(uri)) {
-//       await launchUrl(uri);
-//     } else {
-//       throw 'Could not launch $uri';
-//     }
-//   }
+  @override
+  Widget build(BuildContext context) {
+    final experience = portfolioData['workExperience'] as List<dynamic>;
+    final education = portfolioData['education'] as List<dynamic>;
+    final isMobile =
+        MediaQuery.of(context).size.width < ResponsiveLayout.mobileBreakpoint;
+    final primaryColor = Theme.of(context).primaryColor;
 
-//   @override
-//   Widget build(BuildContext context) {
-//     return ScrollConfiguration(
-//       behavior: NoScrollbarBehavior(),
-//       child: ListView(
-//         padding: const EdgeInsets.all(16.0),
-//         children: [
-//           Text(
-//             'Projects',
-//             style: GoogleFonts.poppins(
-//               fontSize: 28,
-//               fontWeight: FontWeight.bold,
-//               color: Colors.black87,
-//             ),
-//           ),
-//           const Divider(color: Color(0xFF1434A4), thickness: 2),
-//           const SizedBox(height: 16),
-//           for (var project in portfolioData["projects"])
-//             _buildProjectCard(context, project),
-//         ],
-//       ),
-//     );
-//   }
+    return Column(
+      key: experienceKey,
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        if (!isMobileSection)
+          Text(
+            '# Professional Background',
+            style: TextStyle(
+              color: primaryColor,
+              fontSize: isMobile ? 24 : 32,
+              fontWeight: FontWeight.bold,
+            ),
+          ),
+        if (!isMobileSection)
+          const Divider(color: Colors.white12, thickness: 2, height: 40),
 
-//   Widget _buildProjectCard(BuildContext context, Map<String, dynamic> project) {
-//     return Card(
-//       margin: const EdgeInsets.only(bottom: 16),
-//       child: Column(
-//         crossAxisAlignment: CrossAxisAlignment.start,
-//         children: [
-//           const SizedBox(height: 8),
-//           if (project["imageUrl"] != null)
-//             Center(
-//               child: Container(
-//                 width: 180,
-//                 height: 180,
-//                 decoration: BoxDecoration(
-//                   border: Border.all(
-//                     color: Theme.of(context).colorScheme.primary,
-//                     width: 3,
-//                   ),
-//                 ),
-//                 clipBehavior: Clip.hardEdge,
-//                 child: Image.asset(
-//                   project["imageUrl"]!,
-//                   fit: BoxFit.cover,
-//                   frameBuilder:
-//                       (context, child, frame, wasSynchronouslyLoaded) {
-//                     if (wasSynchronouslyLoaded) return child;
-//                     return AnimatedOpacity(
-//                       opacity: frame == null ? 0 : 1,
-//                       duration: const Duration(milliseconds: 500),
-//                       curve: Curves.easeOut,
-//                       child: child,
-//                     );
-//                   },
-//                   errorBuilder: (context, error, stackTrace) {
-//                     return Container(
-//                       color: const Color(0xFF374151),
-//                       child: Center(
-//                         child: Text(
-//                           'Image Load Error',
-//                           style: GoogleFonts.exo(color: Colors.white),
-//                         ),
-//                       ),
-//                     );
-//                   },
-//                 ),
-//               ),
-//             ),
-//           Padding(
-//             padding: const EdgeInsets.all(16.0),
-//             child: Column(
-//               crossAxisAlignment: CrossAxisAlignment.start,
-//               children: [
-//                 Text(
-//                   project["name"],
-//                   style: GoogleFonts.poppins(
-//                     fontSize: 20,
-//                     fontWeight: FontWeight.bold,
-//                     color: Colors.black87,
-//                   ),
-//                 ),
-//                 const SizedBox(height: 8),
-//                 Text(
-//                   project["description"],
-//                   style: GoogleFonts.poppins(color: Colors.grey.shade600),
-//                 ),
-//                 const SizedBox(height: 12),
-//                 if (project["details"] != null) ...[
-//                   for (var detail in project["details"])
-//                     Padding(
-//                       padding: const EdgeInsets.symmetric(vertical: 4.0),
-//                       child: Row(
-//                         crossAxisAlignment: CrossAxisAlignment.center,
-//                         children: [
-//                           Icon(Icons.circle,
-//                               size: 8,
-//                               color: Theme.of(context).colorScheme.primary),
-//                           const SizedBox(width: 8),
-//                           Expanded(
-//                             child: Text(
-//                               detail,
-//                               style: GoogleFonts.poppins(color: Colors.black87),
-//                             ),
-//                           ),
-//                         ],
-//                       ),
-//                     ),
-//                 ],
-//                 const SizedBox(height: 16),
-//                 Wrap(
-//                   spacing: 16,
-//                   children: [
-//                     for (var link in project["links"])
-//                       if (link["url"] != '')
-//                         TextButton.icon(
-//                           icon: Icon(
-//                             link["type"] == 'Play Store'
-//                                 ? Icons.play_arrow
-//                                 : Icons.apple,
-//                             color: Theme.of(context).colorScheme.primary,
-//                           ),
-//                           label: Text(
-//                             link["type"],
-//                             style: GoogleFonts.poppins(
-//                                 color: Theme.of(context).colorScheme.primary),
-//                           ),
-//                           onPressed: () => _launchURL(link["url"]),
-//                         ),
-//                   ],
-//                 ),
-//               ],
-//             ),
-//           ),
-//         ],
-//       ),
-//     );
-//   }
-// }
+        // --- Work Experience ---
+        Text(
+          'WORK EXPERIENCE',
+          style: TextStyle(
+            color: Colors.white,
+            fontSize: isMobile ? 20 : 28,
+            fontWeight: FontWeight.w600,
+          ),
+        ),
+        const SizedBox(height: 20),
+        ...experience.map((exp) => _buildExperienceCard(context, exp)).toList(),
 
-// class ContactPage extends StatelessWidget {
-//   const ContactPage({super.key});
+        const SizedBox(height: 20),
 
-//   _launchURL(String url) async {
-//     final Uri uri = Uri.parse(url);
-//     if (await canLaunchUrl(uri)) {
-//       await launchUrl(uri);
-//     } else {
-//       throw 'Could not launch $uri';
-//     }
-//   }
+        // --- Education ---
+        Text(
+          'EDUCATION',
+          style: TextStyle(
+            color: Colors.white,
+            fontSize: isMobile ? 20 : 28,
+            fontWeight: FontWeight.w600,
+          ),
+        ),
+        const SizedBox(height: 20),
+        ...education.map((edu) => _buildEducationCard(context, edu)).toList(),
+      ],
+    );
+  }
 
-//   @override
-//   Widget build(BuildContext context) {
-//     final contact = portfolioData["contact"] as Map<String, dynamic>;
-//     return ScrollConfiguration(
-//       behavior: NoScrollbarBehavior(),
-//       child: SingleChildScrollView(
-//         child: Padding(
-//           padding: const EdgeInsets.all(16.0),
-//           child: Column(
-//             crossAxisAlignment: CrossAxisAlignment.start,
-//             children: [
-//               Text(
-//                 'Get in Touch',
-//                 style: GoogleFonts.poppins(
-//                   fontSize: 28,
-//                   fontWeight: FontWeight.bold,
-//                   color: Colors.black87,
-//                 ),
-//               ),
-//               const SizedBox(height: 8),
-//               Text(
-//                 "I'm currently open to new opportunities. Let's connect!",
-//                 style: GoogleFonts.poppins(color: Colors.grey.shade600),
-//               ),
-//               const Divider(color: Color(0xFF1434A4), thickness: 2),
-//               const SizedBox(height: 24),
-//               _buildContactCard(context, contact),
-//               const SizedBox(height: 24),
-//             ],
-//           ),
-//         ),
-//       ),
-//     );
-//   }
+  Widget _buildExperienceCard(BuildContext context, Map<String, dynamic> exp) {
+    final primaryColor = Theme.of(context).primaryColor;
+    return Container(
+      margin: const EdgeInsets.only(bottom: 30),
+      padding: const EdgeInsets.all(20),
+      decoration: BoxDecoration(
+        color: const Color(0xFF112240).withOpacity(0.8),
+        borderRadius: BorderRadius.circular(8),
+        border: Border.all(color: primaryColor.withOpacity(0.2)),
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(
+            exp['role']!,
+            style: TextStyle(
+              color: primaryColor,
+              fontSize: 20,
+              fontWeight: FontWeight.bold,
+            ),
+          ),
+          const SizedBox(height: 5),
+          Text(
+            exp['company']!,
+            style: const TextStyle(color: Colors.white, fontSize: 18),
+          ),
+          const SizedBox(height: 5),
+          Text(
+            exp['duration']!,
+            style: const TextStyle(color: Colors.grey, fontSize: 14),
+          ),
+          const Divider(height: 20, color: Colors.white12),
+          ..._buildResponsibilityList(context, exp['responsibilities']),
+        ],
+      ),
+    );
+  }
 
-//   Widget _buildContactCard(BuildContext context, Map<String, dynamic> contact) {
-//     return Card(
-//       child: Padding(
-//         padding: const EdgeInsets.all(16.0),
-//         child: Column(
-//           crossAxisAlignment: CrossAxisAlignment.start,
-//           children: [
-//             _buildContactItem(
-//               context,
-//               icon: Icons.email,
-//               label: contact["email"],
-//               onTap: () => _launchURL("mailto:${contact["email"]}"),
-//             ),
-//             const Divider(),
-//             _buildContactItem(
-//               context,
-//               icon: Icons.phone,
-//               label: contact["phone"],
-//               onTap: () => _launchURL("tel:${contact["phone"]}"),
-//             ),
-//             const Divider(),
-//             _buildContactItem(
-//               context,
-//               icon: Icons.location_on,
-//               label: contact["location"],
-//             ),
-//             const Divider(),
-//             _buildContactItem(
-//               context,
-//               icon: Icons.calendar_today,
-//               label: "Born on: ${contact["dob"]}",
-//             ),
-//             const Divider(),
-//             _buildContactItem(context,
-//                 icon: Icons.picture_as_pdf,
-//                 label: 'My Resume',
-//                 onTap: () => _launchURL("${contact["resume"]}")),
-//             const Divider(),
-//             Row(
-//               mainAxisAlignment: MainAxisAlignment.center,
-//               children: [
-//                 SizedBox(
-//                   height: 48,
-//                   width: 48,
-//                   child: FittedBox(
-//                     fit: BoxFit.scaleDown,
-//                     child: FlutterSocialButton(
-//                       mini: true,
-//                       buttonType: ButtonType.linkedin,
-//                       onTap: () =>
-//                           _launchURL(portfolioData["contact"]["linkedin"]),
-//                     ),
-//                   ),
-//                 ),
-//                 const SizedBox(width: 18),
-//                 SizedBox(
-//                   height: 48,
-//                   width: 48,
-//                   child: FittedBox(
-//                     fit: BoxFit.scaleDown,
-//                     child: FlutterSocialButton(
-//                       mini: true,
-//                       buttonType: ButtonType.github,
-//                       onTap: () =>
-//                           _launchURL(portfolioData["contact"]["github"]),
-//                     ),
-//                   ),
-//                 ),
-//               ],
-//             )
-//           ],
-//         ),
-//       ),
-//     );
-//   }
+  List<Widget> _buildResponsibilityList(
+      BuildContext context, List<dynamic> responsibilities) {
+    return responsibilities.map((res) {
+      return Padding(
+        padding: const EdgeInsets.only(bottom: 8.0),
+        child: Row(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Icon(Icons.chevron_right,
+                color: Theme.of(context).primaryColor, size: 20),
+            const SizedBox(width: 8),
+            Expanded(
+              child: Text(
+                res,
+                style: const TextStyle(color: Colors.grey, height: 1.4),
+              ),
+            ),
+          ],
+        ),
+      );
+    }).toList();
+  }
 
-//   Widget _buildContactItem(BuildContext context,
-//       {required IconData icon, required String label, VoidCallback? onTap}) {
-//     return InkWell(
-//       onTap: onTap,
-//       child: Padding(
-//         padding: const EdgeInsets.symmetric(vertical: 8.0),
-//         child: Row(
-//           children: [
-//             Icon(icon, color: Theme.of(context).colorScheme.primary),
-//             const SizedBox(width: 16),
-//             Expanded(
-//               child: Text(
-//                 label,
-//                 style: GoogleFonts.poppins(color: Colors.black87),
-//               ),
-//             ),
-//           ],
-//         ),
-//       ),
-//     );
-//   }
-// }
+  Widget _buildEducationCard(BuildContext context, Map<String, dynamic> edu) {
+    final primaryColor = Theme.of(context).primaryColor;
+    return Padding(
+      padding: const EdgeInsets.only(bottom: 20.0),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Row(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Icon(Icons.school_outlined, color: primaryColor, size: 24),
+              const SizedBox(width: 15),
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      edu['degree']!,
+                      style: const TextStyle(
+                          color: Colors.white,
+                          fontSize: 18,
+                          fontWeight: FontWeight.bold),
+                    ),
+                    const SizedBox(height: 2),
+                    Text(
+                      edu['school']!,
+                      style:
+                          const TextStyle(color: Colors.white70, fontSize: 16),
+                    ),
+                    const SizedBox(height: 2),
+                    Text(
+                      edu['duration']!,
+                      style: const TextStyle(color: Colors.grey, fontSize: 14),
+                    ),
+                  ],
+                ),
+              ),
+            ],
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+class SkillsSection extends StatelessWidget {
+  final Map<String, dynamic> portfolioData;
+  final bool isMobileSection;
+  const SkillsSection(
+      {required this.portfolioData, this.isMobileSection = false, super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    final skills = portfolioData['skills'] as Map<String, dynamic>;
+    final isMobile =
+        MediaQuery.of(context).size.width < ResponsiveLayout.mobileBreakpoint;
+    final primaryColor = Theme.of(context).primaryColor;
+
+    return Column(
+      key: skillsKey,
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        if (!isMobileSection)
+          Text(
+            '# Skills & Technologies',
+            style: TextStyle(
+              color: primaryColor,
+              fontSize: isMobile ? 24 : 32,
+              fontWeight: FontWeight.bold,
+            ),
+          ),
+        if (!isMobileSection)
+          const Divider(color: Colors.white12, thickness: 2, height: 40),
+        ...skills.entries.map((entry) {
+          return Padding(
+            padding: const EdgeInsets.only(bottom: 25.0),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  '${entry.key.toUpperCase()}:',
+                  style: const TextStyle(
+                    color: Colors.white,
+                    fontWeight: FontWeight.bold,
+                    fontSize: 18,
+                  ),
+                ),
+                const SizedBox(height: 10),
+                Wrap(
+                  alignment: WrapAlignment.start, // Align chips on mobile
+                  spacing: 10.0,
+                  runSpacing: 10.0,
+                  children: (entry.value as List).map((skill) {
+                    return Chip(
+                      backgroundColor: primaryColor.withOpacity(0.1),
+                      label: Text(
+                        skill.toString(),
+                        style: TextStyle(color: primaryColor),
+                      ),
+                      side: BorderSide(color: primaryColor.withOpacity(0.5)),
+                    );
+                  }).toList(),
+                ),
+              ],
+            ),
+          );
+        }).toList(),
+      ],
+    );
+  }
+}
+
+class ProjectsSection extends StatelessWidget {
+  final Map<String, dynamic> portfolioData;
+  final bool isMobileSection;
+  const ProjectsSection(
+      {required this.portfolioData, this.isMobileSection = false, super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    final projects = portfolioData['projects'] as List<dynamic>;
+    final isMobile =
+        MediaQuery.of(context).size.width < ResponsiveLayout.mobileBreakpoint;
+    final isTablet =
+        MediaQuery.of(context).size.width < ResponsiveLayout.tabletBreakpoint;
+
+    int crossAxisCount = isMobile ? 1 : (isTablet ? 2 : 3);
+
+    return Column(
+      key: projectsKey,
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        if (!isMobileSection)
+          Text(
+            '# Featured Projects',
+            style: TextStyle(
+              color: Theme.of(context).primaryColor,
+              fontSize: isMobile ? 24 : 32,
+              fontWeight: FontWeight.bold,
+            ),
+          ),
+        if (!isMobileSection)
+          const Divider(color: Colors.white12, thickness: 2, height: 40),
+        GridView.builder(
+          shrinkWrap: true,
+          physics: const NeverScrollableScrollPhysics(),
+          gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+            crossAxisCount: crossAxisCount,
+            crossAxisSpacing: 20,
+            mainAxisSpacing: 20,
+            childAspectRatio: isMobile ? 0.8 : 0.9,
+          ),
+          itemCount: projects.length,
+          itemBuilder: (context, index) {
+            final project = projects[index];
+            return ProjectCard(project: project, isMobile: isMobile);
+          },
+        ),
+      ],
+    );
+  }
+}
+
+class ProjectCard extends StatelessWidget {
+  final Map<String, dynamic> project;
+  final bool isMobile;
+
+  const ProjectCard({required this.project, required this.isMobile, super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      decoration: BoxDecoration(
+        color: const Color(0xFF112240),
+        borderRadius: BorderRadius.circular(8.0),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black.withOpacity(0.2),
+            blurRadius: 8,
+            offset: const Offset(0, 4),
+          ),
+        ],
+      ),
+      padding: const EdgeInsets.all(20.0),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Center(
+            child: ClipRRect(
+              borderRadius: BorderRadius.circular(8.0),
+              child: SizedBox(
+                height: 120,
+                child: Image.asset(
+                  project['imageUrl'],
+                  fit: BoxFit.contain,
+                  errorBuilder: (context, error, stackTrace) => Container(
+                    color: Colors.black38,
+                    alignment: Alignment.center,
+                    child: Icon(Icons.mobile_friendly,
+                        color: Theme.of(context).primaryColor, size: 40),
+                  ),
+                ),
+              ),
+            ),
+          ),
+          const SizedBox(height: 15),
+          Text(
+            project['name'],
+            style: TextStyle(
+              color: Theme.of(context).primaryColor,
+              fontSize: isMobile ? 20 : 24,
+              fontWeight: FontWeight.bold,
+            ),
+          ),
+          const SizedBox(height: 10),
+          Text(
+            project['description'],
+            style: const TextStyle(color: Colors.white70, fontSize: 16),
+            maxLines: 2,
+            overflow: TextOverflow.ellipsis,
+          ),
+          const SizedBox(height: 15),
+          // Scrollable list for details
+          Expanded(
+            child: ListView(
+              padding: EdgeInsets.zero,
+              children: (project['details'] as List<dynamic>).map((detail) {
+                return Padding(
+                  padding: const EdgeInsets.only(bottom: 4.0),
+                  child: Row(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Icon(Icons.check_circle_outline,
+                          color: Theme.of(context).primaryColor, size: 14),
+                      const SizedBox(width: 8),
+                      Expanded(
+                        child: Text(
+                          detail,
+                          style:
+                              const TextStyle(color: Colors.grey, fontSize: 14),
+                        ),
+                      ),
+                    ],
+                  ),
+                );
+              }).toList(),
+            ),
+          ),
+          const SizedBox(height: 10),
+          // Links Section
+          Align(
+            alignment: isMobile ? Alignment.center : Alignment.bottomLeft,
+            child: Wrap(
+              spacing: 10.0,
+              children: (project['links'] as List<dynamic>).map((link) {
+                if (link['url'].isEmpty) return const SizedBox.shrink();
+                return TextButton(
+                  onPressed: () => launchURL(link['url']),
+                  child: Text(link['type']),
+                );
+              }).toList(),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+class ContactDetailsSection extends StatelessWidget {
+  final Map<String, dynamic> contact;
+  final bool isMobileSection;
+
+  const ContactDetailsSection(
+      {required this.contact, this.isMobileSection = false, super.key});
+
+  Widget _buildContactItem(BuildContext context, IconData icon, String label,
+      String value, String? url) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: 8.0),
+      child: InkWell(
+        onTap: url != null ? () => launchURL(url) : null,
+        child: Row(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Icon(icon, color: Theme.of(context).primaryColor, size: 24),
+            const SizedBox(width: 15),
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(label,
+                      style:
+                          const TextStyle(color: Colors.white70, fontSize: 14)),
+                  const SizedBox(height: 2),
+                  Text(
+                    value,
+                    style: TextStyle(
+                      color: Theme.of(context).primaryColor,
+                      fontSize: 16,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final isMobile =
+        MediaQuery.of(context).size.width < ResponsiveLayout.mobileBreakpoint;
+    final primaryColor = Theme.of(context).primaryColor;
+
+    return Container(
+      key: contactKey,
+      padding: EdgeInsets.symmetric(vertical: isMobile ? 48 : 50),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          if (!isMobileSection)
+            Text(
+              '# Contact & Connect',
+              style: TextStyle(
+                color: primaryColor,
+                fontSize: isMobile ? 24 : 32,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+          if (!isMobileSection)
+            const Divider(color: Colors.white12, thickness: 2, height: 40),
+          Text(
+            "Let's Connect and build something great!",
+            style: TextStyle(
+              color: primaryColor,
+              fontSize: isMobile ? 18 : 22,
+              fontWeight: FontWeight.w600,
+            ),
+          ),
+          const SizedBox(height: 10),
+          Text(
+            "I'm currently **open to new opportunities** and would love to hear about your projects.",
+            style: TextStyle(
+              color: Colors.grey.shade400,
+              fontSize: isMobile ? 16 : 18,
+            ),
+          ),
+          const SizedBox(height: 30),
+          _buildContactItem(
+            context,
+            Icons.email_outlined,
+            'Email Address',
+            contact['email']!,
+            'mailto:${contact['email']}',
+          ),
+          _buildContactItem(
+            context,
+            Icons.phone_outlined,
+            'Phone Number',
+            contact['phone']!,
+            'tel:${contact['phone']}',
+          ),
+          _buildContactItem(
+            context,
+            Icons.location_on_outlined,
+            'Location',
+            contact['location']!,
+            null,
+          ),
+          _buildContactItem(
+            context,
+            Icons.description_outlined,
+            'Resume',
+            'View Full Resume',
+            portfolioData['contact']['resume']!,
+          ),
+          const SizedBox(height: 48),
+          Padding(
+            padding: const EdgeInsets.symmetric(vertical: 10.0),
+            child: Align(
+                alignment: isMobile ? Alignment.center : Alignment.bottomLeft,
+                child: ContactLinks(contact: contact)),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+class MobileSectionWrapper extends StatelessWidget {
+  final Widget child;
+  const MobileSectionWrapper({required this.child, super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return SingleChildScrollView(
+      padding: const EdgeInsets.symmetric(horizontal: 20.0),
+      child: Column(
+        children: [
+          child,
+          const SizedBox(height: 18),
+          const Text("Designed and Built with Flutter 💙",
+              style: TextStyle(color: Colors.grey, fontSize: 12),
+              textAlign: TextAlign.center),
+          const SizedBox(height: 20),
+        ],
+      ),
+    );
+  }
+}
+
+class DesktopView extends StatelessWidget {
+  const DesktopView({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    final ScrollController scrollController = ScrollController();
+
+    return Scaffold(
+      appBar: PreferredSize(
+        preferredSize: const Size.fromHeight(60.0),
+        child: TopBar(
+          portfolioData: portfolioData,
+          scrollController: scrollController,
+        ),
+      ),
+      body: Scrollbar(
+        controller: scrollController,
+        child: ListView(
+          controller: scrollController,
+          children: [
+            Center(
+              child: ConstrainedBox(
+                constraints: const BoxConstraints(maxWidth: 1200),
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 40.0),
+                  child: Column(
+                    children: [
+                      const AnimatedSectionWrapper(
+                          child: HeaderSection(
+                              portfolioData: portfolioData)), // Animated
+                      const SizedBox(height: 100),
+                      const AnimatedSectionWrapper(
+                          delay: Duration(milliseconds: 100),
+                          child: ExperienceAndEducationSection(
+                              portfolioData:
+                                  portfolioData)), // Animated + Delayed
+                      const SizedBox(height: 100),
+                      const AnimatedSectionWrapper(
+                          delay: Duration(milliseconds: 200),
+                          child: SkillsSection(
+                              portfolioData: portfolioData)), // Animated
+                      const SizedBox(height: 100),
+                      const AnimatedSectionWrapper(
+                          delay: Duration(milliseconds: 300),
+                          child: ProjectsSection(
+                              portfolioData: portfolioData)), // Animated
+                      const SizedBox(height: 100),
+                      AnimatedSectionWrapper(
+                          delay: const Duration(milliseconds: 400),
+                          child: ContactDetailsSection(
+                              contact: portfolioData['contact'])), // Animated
+                      const SizedBox(height: 18),
+                      const Text("Designed and Built with Flutter 💙",
+                          style: TextStyle(color: Colors.grey, fontSize: 12)),
+                      const SizedBox(height: 20),
+                    ],
+                  ),
+                ),
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+class TabletView extends StatelessWidget {
+  const TabletView({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    // Tablet can use the same layout as Desktop, just with narrower constraints
+    return const DesktopView();
+  }
+}
+
+class MobileView extends StatefulWidget {
+  const MobileView({super.key});
+
+  @override
+  State<MobileView> createState() => _MobileViewState();
+}
+
+class _MobileViewState extends State<MobileView> {
+  int _selectedIndex = 0;
+
+  final List<Widget> _pages = [
+    const MobileSectionWrapper(
+        child:
+            HeaderSection(portfolioData: portfolioData, isMobileSection: true)),
+    const MobileSectionWrapper(
+        child: ExperienceAndEducationSection(
+            portfolioData: portfolioData, isMobileSection: true)),
+    const MobileSectionWrapper(
+        child:
+            SkillsSection(portfolioData: portfolioData, isMobileSection: true)),
+    const MobileSectionWrapper(
+        child: ProjectsSection(
+            portfolioData: portfolioData, isMobileSection: true)),
+    MobileSectionWrapper(
+        child: ContactDetailsSection(
+            contact: portfolioData['contact'], isMobileSection: true)),
+  ];
+
+  void _onItemTapped(int index) {
+    setState(() {
+      _selectedIndex = index;
+    });
+  }
+
+  String _getAppBarTitle(int index) {
+    switch (index) {
+      case 0:
+        return portfolioData['name'] as String;
+      case 1:
+        return 'Experience';
+      case 2:
+        return 'Skills';
+      case 3:
+        return 'Projects';
+      case 4:
+        return 'Contact';
+      default:
+        return 'Portfolio';
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: Text(_getAppBarTitle(_selectedIndex),
+            style: TextStyle(
+                fontSize: 18,
+                color: Theme.of(context).primaryColor,
+                fontWeight: FontWeight.bold)),
+        backgroundColor: Theme.of(context).scaffoldBackgroundColor,
+      ),
+      body: IndexedStack(
+        index: _selectedIndex,
+        children: _pages,
+      ),
+      bottomNavigationBar: BottomNavigationBar(
+        type: BottomNavigationBarType.fixed,
+        items: const <BottomNavigationBarItem>[
+          BottomNavigationBarItem(
+            icon: Icon(Icons.home_outlined),
+            label: 'Home',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.business_center_outlined),
+            label: 'Experience',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.flash_on_outlined),
+            label: 'Skills',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.work_outline),
+            label: 'Projects',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.mail_outline),
+            label: 'Contact',
+          ),
+        ],
+        currentIndex: _selectedIndex,
+        selectedItemColor: Theme.of(context).primaryColor,
+        unselectedItemColor: Colors.grey,
+        backgroundColor: Theme.of(context).scaffoldBackgroundColor,
+        onTap: _onItemTapped,
+      ),
+    );
+  }
+}
+
+void main() {
+  runApp(const MyApp());
+}
+
+class MyApp extends StatelessWidget {
+  const MyApp({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      title: 'Prakash Dodawad - Flutter Developer',
+      debugShowCheckedModeBanner: false,
+      theme: ThemeData(
+        brightness: Brightness.dark,
+        scaffoldBackgroundColor: const Color(0xFF0A192F),
+        primaryColor: const Color(0xFF64FFDA),
+        textTheme: GoogleFonts.firaSansTextTheme(
+          Theme.of(context).textTheme.apply(
+                bodyColor: Colors.white,
+                displayColor: Colors.white,
+              ),
+        ),
+        textButtonTheme: TextButtonThemeData(
+          style: TextButton.styleFrom(
+            foregroundColor: const Color(0xFF64FFDA),
+            side: const BorderSide(color: Color(0xFF64FFDA), width: 2),
+            padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 15),
+          ),
+        ),
+        chipTheme: ChipThemeData(
+          backgroundColor: const Color(0xFF112240),
+          labelStyle: const TextStyle(color: Color(0xFF64FFDA)),
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(5.0),
+          ),
+        ),
+      ),
+      home: const MainPortfolioPage(),
+    );
+  }
+}
+
+class MainPortfolioPage extends StatelessWidget {
+  const MainPortfolioPage({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return const ResponsiveLayout(
+      mobileScaffold: MobileView(),
+      tabletScaffold: TabletView(),
+      desktopScaffold: DesktopView(),
+    );
+  }
+}

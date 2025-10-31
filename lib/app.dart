@@ -33,13 +33,13 @@ class PortfolioApp extends StatelessWidget {
           headlineLarge: GoogleFonts.poppins(
               color: Colors.black87, fontWeight: FontWeight.bold),
         ),
-        cardTheme: CardTheme(
-          color: Colors.grey.shade50,
-          elevation: 2,
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(12),
-          ),
-        ),
+        // cardTheme: CardTheme(
+        //   color: Colors.grey.shade50,
+        //   elevation: 2,
+        //   shape: RoundedRectangleBorder(
+        //     borderRadius: BorderRadius.circular(12),
+        //   ),
+        // ),
         colorScheme: const ColorScheme.light(
           primary: Color(0xFF1434A4),
           secondary: Color(0xFFF0F2F5),
