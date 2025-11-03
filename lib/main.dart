@@ -1,6 +1,7 @@
 // ignore_for_file: deprecated_member_use
 
 import 'package:flutter/material.dart';
+import 'package:flutter_social_button/flutter_social_button.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:url_launcher/url_launcher.dart';
 
@@ -20,7 +21,7 @@ const Map<String, dynamic> portfolioData = {
     "email": "prakashgdodawad@gmail.com",
     "phone": "+916366133365",
     "resume":
-        "https://drive.google.com/file/d/10T55Kjx_zAFNTNTEpaP8DNX2Q9MtMWcEj/view?usp=sharing",
+        "https://drive.google.com/file/d/1mBzO_tiUfGQ7L5eHps-A2MXFoz7PpAMR/view?usp=sharing",
     "linkedin": "https://www.linkedin.com/in/prakash-dodawad-a621571b8",
     "github": "https://github.com/PrakashDodawad2024",
     "youtube": "https://www.youtube.com/@FlutterbyPrakash",
@@ -289,11 +290,31 @@ class TopBar extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final List<Map<String, dynamic>> navItems = [
-      {'text': 'About', 'key': aboutKey},
-      {'text': 'Experience', 'key': experienceKey},
-      {'text': 'Skills', 'key': skillsKey},
-      {'text': 'Projects', 'key': projectsKey},
-      {'text': 'Contact', 'key': contactKey},
+      {
+        'text': 'About',
+        'icon': Icons.person_rounded,
+        'key': aboutKey,
+      },
+      {
+        'text': 'Experience',
+        'icon': Icons.badge_rounded,
+        'key': experienceKey,
+      },
+      {
+        'text': 'Skills',
+        'icon': Icons.auto_awesome_rounded,
+        'key': skillsKey,
+      },
+      {
+        'text': 'Projects',
+        'icon': Icons.folder_special_rounded,
+        'key': projectsKey,
+      },
+      {
+        'text': 'Contact',
+        'icon': Icons.alternate_email_rounded,
+        'key': contactKey,
+      },
     ];
 
     return AppBar(
@@ -316,6 +337,7 @@ class TopBar extends StatelessWidget {
                 return Padding(
                   padding: const EdgeInsets.all(8.0),
                   child: _NavBarButton(
+                    icon: item['icon'],
                     text: item['text'],
                     onPressed: () =>
                         scrollToKey(item['key'] as GlobalKey, scrollController),
@@ -333,19 +355,18 @@ class TopBar extends StatelessWidget {
 
 class _NavBarButton extends StatelessWidget {
   final String text;
+  final IconData? icon;
   final VoidCallback onPressed;
-  const _NavBarButton({required this.text, required this.onPressed});
+  const _NavBarButton({required this.text, required this.onPressed, this.icon});
 
   @override
   Widget build(BuildContext context) {
-    return TextButton(
+    return TextButton.icon(
       onPressed: onPressed,
-      child: Text(
+      icon: Icon(icon, size: 20),
+      label: Text(
         text,
-        style: const TextStyle(
-          color: Colors.white,
-          fontSize: 16,
-        ),
+        style: const TextStyle(fontSize: 16, fontWeight: FontWeight.w500),
       ),
     );
   }
@@ -360,15 +381,38 @@ class ContactLinks extends StatelessWidget {
     return Row(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
-        _SocialIcon(
-            icon: Icons.link, url: contact['linkedin'], label: 'LinkedIn'),
-        _SocialIcon(icon: Icons.code, url: contact['github'], label: 'GitHub'),
-        _SocialIcon(
-            icon: Icons.email,
-            url: 'mailto:${contact['email']}',
-            label: 'Email'),
-        _SocialIcon(
-            icon: Icons.play_arrow, url: contact['youtube'], label: 'YouTube'),
+        Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            _SocialIcon(
+              icon: FontAwesomeIcons.linkedinIn,
+              url: contact['linkedin'],
+              label: 'LinkedIn',
+              color: Colors.blueAccent,
+            ),
+            const SizedBox(width: 18),
+            _SocialIcon(
+              icon: FontAwesomeIcons.github,
+              url: contact['github'],
+              label: 'GitHub',
+              color: Colors.white,
+            ),
+            const SizedBox(width: 18),
+            _SocialIcon(
+              icon: Icons.email_rounded,
+              url: 'mailto:${contact['email']}',
+              label: 'Email',
+              color: Colors.red,
+            ),
+            const SizedBox(width: 18),
+            _SocialIcon(
+              icon: FontAwesomeIcons.youtube,
+              url: contact['youtube'],
+              label: 'YouTube',
+              color: Colors.red,
+            ),
+          ],
+        )
       ],
     );
   }
@@ -378,19 +422,37 @@ class _SocialIcon extends StatelessWidget {
   final IconData icon;
   final String url;
   final String label;
+  final Color color;
 
   const _SocialIcon({
     required this.icon,
     required this.url,
     required this.label,
+    required this.color,
   });
+
+  void launchURL(String url) async {
+    if (await canLaunchUrl(Uri.parse(url))) {
+      await launchUrl(Uri.parse(url), mode: LaunchMode.externalApplication);
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
-    return IconButton(
-      icon: Icon(icon, color: Theme.of(context).primaryColor, size: 28),
-      tooltip: label,
-      onPressed: () => launchURL(url),
+    return SizedBox(
+      height: 48,
+      width: 48,
+      child: FittedBox(
+        fit: BoxFit.scaleDown,
+        child: CircleAvatar(
+          backgroundColor: color.withOpacity(0.1),
+          child: IconButton(
+            tooltip: label,
+            icon: Icon(icon, color: color, size: 22),
+            onPressed: () => launchURL(url),
+          ),
+        ),
+      ),
     );
   }
 }
@@ -1220,23 +1282,23 @@ class _MobileViewState extends State<MobileView> {
         type: BottomNavigationBarType.fixed,
         items: const <BottomNavigationBarItem>[
           BottomNavigationBarItem(
-            icon: Icon(Icons.home_outlined),
-            label: 'Home',
+            icon: Icon(Icons.person_rounded),
+            label: 'About',
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.business_center_outlined),
+            icon: Icon(Icons.badge_rounded),
             label: 'Experience',
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.flash_on_outlined),
+            icon: Icon(Icons.auto_awesome_rounded),
             label: 'Skills',
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.work_outline),
+            icon: Icon(Icons.folder_special_rounded),
             label: 'Projects',
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.mail_outline),
+            icon: Icon(Icons.alternate_email_rounded),
             label: 'Contact',
           ),
         ],
